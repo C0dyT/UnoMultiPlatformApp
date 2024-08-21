@@ -8,7 +8,72 @@
       NavigationCacheMode="Required"
       Background="{ThemeResource BackgroundBrush}">
   <ScrollViewer>
-    <Grid utu:SafeArea.Insets="VisibleBounds">
+    <Grid>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width ="300" />
+        <ColumnDefinition />
+      </Grid.ColumnDefinitions>
+
+      <StackPanel Grid.Column="0"
+                    HorizontalAlignment="Center"
+                    Orientation="Vertical"
+                    Margin = "10, 30, 10, 30">
+        <TextBlock Text = "Simple Code Snippets" FontWeight = "SemiBold" FontSize = "35" Margin ="10,10,10,10"/>
+        <TextBlock Text="Please click a button below to display associated sample" Margin= "10, 10, 10, 10"/>
+        <Button Margin ="10" Content="Simple Counter"
+                    uen:Navigation.Request="./One" />
+        <Button Margin ="10" Content="Two"
+                    uen:Navigation.Request="./Two" />
+        <Button Margin ="10" Content="Three"
+                    uen:Navigation.Request="./Three" />
+      </StackPanel>
+
+      <Grid uen:Region.Attached="True"
+              uen:Region.Navigator="Visibility"
+              Grid.Column="1">
+        <Grid uen:Region.Name="One"
+                  Visibility="Collapsed">
+          <StackPanel VerticalAlignment="Center">
+            <Image Width="150"
+               Height="150"
+               Margin="12"
+               HorizontalAlignment="Center"
+               Source="Assets/logo.png" />
+
+            <NumberBox Margin="12"
+               HorizontalAlignment="Center"
+               PlaceholderText="Step Size"
+               Text="{Binding Step, Mode=TwoWay}" />
+
+            <TextBlock Margin="12"
+               HorizontalAlignment="Center"
+               TextAlignment="Center">
+              <Run Text="Counter: " /><Run Text="{Binding Count}" />
+            </TextBlock>
+
+            <Button Margin="12"
+              HorizontalAlignment="Center"
+              Command="{Binding IncrementCommand}"
+              Content="Increment Counter by Step Size" />
+          </StackPanel>
+        </Grid>
+        <Grid uen:Region.Name="Two"
+                  Visibility="Collapsed">
+          <TextBlock Text="Two"
+                           FontSize="24"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center" />
+        </Grid>
+        <Grid uen:Region.Name="Three"
+                  Visibility="Collapsed">
+          <TextBlock Text="Three"
+                           FontSize="24"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center" />
+        </Grid>
+      </Grid>
+    </Grid>
+    <!--<Grid utu:SafeArea.Insets="VisibleBounds">
       <Grid.RowDefinitions>
         <RowDefinition Height="Auto" />
         <RowDefinition />
@@ -25,6 +90,6 @@
             AutomationProperties.AutomationId="SecondPageButton"
             Command="{Binding GoToSecond}" />
       </StackPanel>
-    </Grid>
+    </Grid>-->
   </ScrollViewer>
 </Page>

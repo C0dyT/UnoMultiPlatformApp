@@ -1,9 +1,20 @@
 namespace UnoMultiPlatformApp.Presentation;
 
+
 public partial class MainViewModel : ObservableObject
 {
     private INavigator _navigator;
 
+    [ObservableProperty]
+    private int _count = 0;
+
+    [ObservableProperty]
+    private int _step = 1;
+
+    [RelayCommand]
+    private void Increment()
+        => Count += Step;
+    
     [ObservableProperty]
     private string? name;
 
@@ -17,6 +28,8 @@ public partial class MainViewModel : ObservableObject
         Title += $" - {localizer["ApplicationName"]}";
         Title += $" - {appInfo?.Value?.Environment}";
         GoToSecond = new AsyncRelayCommand(GoToSecondView);
+
+
     }
     public string? Title { get; }
 
