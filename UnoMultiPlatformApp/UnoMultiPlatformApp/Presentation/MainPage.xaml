@@ -1,13 +1,21 @@
 ﻿<Page x:Class="UnoMultiPlatformApp.Presentation.MainPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:converters="using:UnoMultiPlatformApp.Converters"
       xmlns:local="using:UnoMultiPlatformApp.Presentation"
       xmlns:uen="using:Uno.Extensions.Navigation.UI"
       xmlns:utu="using:Uno.Toolkit.UI"
       xmlns:um="using:Uno.Material"
       NavigationCacheMode="Required"
       Background="{ThemeResource BackgroundBrush}">
-  <ScrollViewer>
+  
+    <Page.Resources>
+      <converters:CelsiusToFahrenheitConverter x:Key="CelsiusToFahrenheitConverter" />
+      <converters:KilogramToPoundConverter x:Key="KilogramToPoundConverter" />
+      <converters:DoubleFormatter x:Key="df" />
+    </Page.Resources>
+
+    <ScrollViewer>
     <Grid>
       <Grid.ColumnDefinitions>
         <ColumnDefinition Width ="300" />
@@ -22,9 +30,9 @@
         <TextBlock Text="Please click a button below to display associated sample" Margin= "10, 10, 10, 10"/>
         <Button Margin ="10" Content="Simple Counter"
                     uen:Navigation.Request="./One" />
-        <Button Margin ="10" Content="Two"
+        <Button Margin ="10" Content="Conversion Samples"
                     uen:Navigation.Request="./Two" />
-        <Button Margin ="10" Content="Three"
+        <Button Margin ="10" Content="ComboBox and Font Binding"
                     uen:Navigation.Request="./Three" />
       </StackPanel>
 
@@ -32,7 +40,7 @@
               uen:Region.Navigator="Visibility"
               Grid.Column="1">
         <Grid uen:Region.Name="One"
-                  Visibility="Collapsed">
+                  Visibility="Visible">
           <StackPanel VerticalAlignment="Center">
             <Image Width="150"
                Height="150"
@@ -59,17 +67,69 @@
         </Grid>
         <Grid uen:Region.Name="Two"
                   Visibility="Collapsed">
-          <TextBlock Text="Two"
-                           FontSize="24"
-                           HorizontalAlignment="Center"
-                           VerticalAlignment="Center" />
+          <StackPanel VerticalAlignment="Center"
+            HorizontalAlignment="Center">
+            <StackPanel HorizontalAlignment ="Center" Orientation ="Horizontal">
+              <TextBlock Text ="Celsius:"
+                    Margin ="12"
+                    FontSize ="24"
+                    HorizontalAlignment ="Center"
+                    VerticalAlignment = "Center" />
+              <NumberBox Text="{Binding Celsius, Mode= TwoWay}"
+                    NumberFormatter ="{StaticResource df}"
+                    FontSize="24"
+                    Margin="12"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"/>
+              <TextBlock Text="Fahrenheit:"
+                    Margin="12"
+                    FontSize="24"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"/>
+              <NumberBox Margin="12"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    FontSize="24"
+                    Text="{Binding Celsius, Converter={StaticResource CelsiusToFahrenheitConverter}, Mode=TwoWay}"
+                    NumberFormatter="{StaticResource df}"/>
+            </StackPanel>
+            <StackPanel HorizontalAlignment ="Center" Orientation ="Horizontal">
+              <TextBlock Text ="Kilograms:"
+                    Margin ="12"
+                    FontSize ="24"
+                    HorizontalAlignment ="Center"
+                    VerticalAlignment = "Center" />
+              <NumberBox Text="{Binding Kilograms, Mode= TwoWay}"
+                    NumberFormatter ="{StaticResource df}"
+                    FontSize="24"
+                    Margin="12"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"/>
+              <TextBlock Text="Pounds:"
+                    Margin="12"
+                    FontSize="24"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"/>
+              <NumberBox Margin="12"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    FontSize="24"
+                    Text="{Binding Kilograms, Converter={StaticResource KilogramToPoundConverter}, Mode=TwoWay}"
+                    NumberFormatter="{StaticResource df}"/>
+            </StackPanel>
+          </StackPanel>
         </Grid>
         <Grid uen:Region.Name="Three"
                   Visibility="Collapsed">
-          <TextBlock Text="Three"
-                           FontSize="24"
-                           HorizontalAlignment="Center"
-                           VerticalAlignment="Center" />
+          <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Padding="10"
+            Spacing="10">
+            <ComboBox Header="Fonts"
+              ItemsSource="{Binding Fonts}"
+              x:Name="font"
+              SelectedItem="{Binding SelectedFont, Mode=TwoWay}" />
+            <TextBlock Text="This is using the chosen font"
+               FontFamily="{Binding SelectedFont}" />
+          </StackPanel>
         </Grid>
       </Grid>
     </Grid>
